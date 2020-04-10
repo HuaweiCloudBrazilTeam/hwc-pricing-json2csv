@@ -31,6 +31,7 @@ with open("ecs-pricing.csv", "w", newline="") as csv_file:
         "productId",
         "planListLength",
         "paymentTypeKey",
+        "amountType",
         "amount",
     ]
     thewriter = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -51,14 +52,10 @@ with open("ecs-pricing.csv", "w", newline="") as csv_file:
             "planListLength": len(resourceVM["planList"]),
             "chargeMode": resourceVM["chargeMode"][0],
         }
-        if resourceVM["chargeMode"][0] == "ONDEMAND":
-            pricing_entry["productId"] = resourceVM["planList"][0]["productId"]
-            pricing_entry["amount"] = resourceVM["planList"][0]["amount"]
-            thewriter.writerow(pricing_entry)
-        else:
-            for plan in resourceVM["planList"]:
-                pricing_entry["paymentTypeKey"] = plan["paymentTypeKey"]
-                pricing_entry["productId"] = plan["productId"]
-                pricing_entry["amount"] = plan["amount"]
+        for plan in resourceVM["planList"]:
+            pricing_entry["amountType"] = plan.get("amountType")
+            pricing_entry["paymentTypeKey"] = plan.get("paymentTypeKey")
+            pricing_entry["productId"] = plan["productId"]
+            pricing_entry["amount"] = plan["amount"]
 
-                thewriter.writerow(pricing_entry)
+            thewriter.writerow(pricing_entry)
