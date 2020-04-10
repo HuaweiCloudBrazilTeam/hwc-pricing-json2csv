@@ -31,6 +31,7 @@ with open("ecs-pricing.csv", "w", newline="") as csv_file:
         "productId",
         "planListLength",
         "paymentTypeKey",
+        "RITime",
         "amountType",
         "amount",
     ]
@@ -51,6 +52,7 @@ with open("ecs-pricing.csv", "w", newline="") as csv_file:
             "ram": resourceVM["mem"].split()[0],
             "planListLength": len(resourceVM["planList"]),
             "chargeMode": resourceVM["chargeMode"][0],
+            "RITime" : resourceVM.get("RITime")
         }
         for plan in resourceVM["planList"]:
             pricing_entry["amountType"] = plan.get("amountType")
