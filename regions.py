@@ -1,0 +1,17 @@
+regions = [
+    "ap-southeast-1",
+    "ap-southeast-2",
+    "ap-southeast-3",
+    "af-south-1",
+    "la-south-2",
+    "sa-chile-1",
+    "na-mexico-1",
+    "sa-brazil-1",
+    "sa-peru-1",
+    "sa-argentina-1",
+    "cn-north-1",
+    "cn-north-4",
+    "cn-east-3",
+    "cn-east-2",
+    "cn-south-1",
+]
