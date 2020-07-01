@@ -45,7 +45,8 @@ def generate_csv(regions):
                         resourceVM.get("generationTypeMap", ""),
                         resourceVM.get("generationTypeMap", ""),
                     ),
-                    "generationLevel": resourceVM["generation"].split(".")[0][-1:],
+                    #FIXME: generationLevel should be just the numerical digit, but method below doesn't work with composite generations (eg: c3ne)
+                    "generationLevel": resourceVM["generation"].split(".")[0][-1:], 
                     "generation": resourceVM["generation"].lower(),
                     "spec": resourceVM["spec"],
                     "resourceSpecCode": resourceVM["resourceSpecCode"],
@@ -55,7 +56,7 @@ def generate_csv(regions):
                     "ram": resourceVM["mem"].split()[0],
                     "RITime": resourceVM.get("RITime", "..ONDEMAND")
                     .split(".")[2]
-                    .split("_")[0],
+                    .split("_")[0]  # Replacing empty RITime with "ONDEMAND",
                 }
                 for plan in resourceVM["planList"]:
                     pricing_entry["amountType"] = plan.get("amountType")
