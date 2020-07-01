@@ -29,7 +29,7 @@ def generate_csv(regions):
         thewriter.writeheader()
 
         for region in regions:
-            logging.warn(f"Writing data for {region} in {csv_file.name}")
+            logging.warn(f"Writing ECS pricing data in {csv_file.name} for {region}")
             with open("ecs-pricing_" + region + ".json", "r") as json_file:
                 data = json.load(json_file)
 
