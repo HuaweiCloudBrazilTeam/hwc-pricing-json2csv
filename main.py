@@ -8,13 +8,10 @@ import gzip
 from regions import regions
 import ecs
 
-
 services = ["ecs", "bms", "sfs", "evs", "cce", "obs", "vpc", "vpn", "rds", "kms"]
 
 
-
 def download_json(regions, services):
-
     for region in regions:
         for service in services:
             api_url = (
@@ -32,9 +29,7 @@ def download_json(regions, services):
                 writer.write(result)
 
 
-
 if __name__ == "__main__":
     # logging.basicConfig(level=logging.INFO)
     download_json(regions, services)
     ecs.generate_csv(regions)
-
