@@ -9,7 +9,6 @@ def generate_csv(regions):
             "region",
             "productId",
             "resourceSpecCode",
-            "volumeType",
             "iops",
             "amount",
         ]
@@ -22,15 +21,20 @@ def generate_csv(regions):
                 data = json.load(json_file)
 
             for resourceEVS in data["product"]["hws.resource.type.volume"]:
-                logging.info(f"Found hws.resource.type.volume: {resourceEVS['spec']}")
+                logging.info(
+                    f"Found hws.resource.type.volume: {resourceEVS['resourceSpecCode']}"
+                )
                 pricing_entry = {
                     "region": region,
                     "resourceSpecCode": resourceEVS["resourceSpecCode"],
-                    "volumeType": resourceEVS["volumeType"],
                     "iops": resourceEVS.get("iops"),
                 }
                 for plan in resourceEVS["planList"]:
                     pricing_entry["productId"] = plan["productId"]
                     pricing_entry["amount"] = f'{plan["amount"]:.6f}'
 
-                    thewriter.writerow(pricing_entry)
+                    if (
+                        plan.get("billingMode") == "ONDEMAND"
+                        and plan.get("billingEvent") == "event.type.volumeduration"
+                    ):
+                        thewriter.writerow(pricing_entry)
