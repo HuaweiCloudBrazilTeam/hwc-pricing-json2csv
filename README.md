@@ -10,3 +10,22 @@ All the consumed APIs are public and don't require authentication. The Pricing i
 
 All the ECS pricing information is expressed as USD/Hour, even in the Reserved Instances purchase model.
 
+One way to facilitate the usage of the generated CSVs is to upload them to a public OBS bucket, and use the URL to import them back in Excel. That way, you can share the analysis spreadsheet without breaking the update mechanism.
+
+## Requirements
+
+The script was developed and manually tested in Ubuntu 18.04 with Python 3.6.9
+
+* Python 3 without additional dependencies
+
+
+## Running the tool
+
+
+```bash
+./main.py
+```
+
+The progress of download and convertion steps will be shown in the console as logging output.
+
+
