@@ -8,9 +8,10 @@ import gzip
 from regions import regions
 import ecs
 import evs
+import eip
 
-# services = ["ecs", "bms", "sfs", "evs", "cce", "obs", "vpc", "vpn", "rds", "kms"]
-services = ["ecs", "evs"]
+services = ["cce", "ecs", "evs", "eip"]
+
 
 
 def download_json(regions, services):
@@ -23,10 +24,18 @@ def download_json(regions, services):
                 + region
             )
             logging.warn(f"Downloading data from {api_url}")
-
             request = urllib.request.Request(api_url)
             response = urllib.request.urlopen(request)
-            result = gzip.decompress(response.read())
+            logging.warn(f'Content-Encoding: {response.info().get("Content-Encoding")}')
+            if response.info().get("Content-Encoding") == "gzip":
+                result = gzip.decompress(response.read())
+            elif response.info().get("Content-Encoding") == "deflate":
+                result = response.read()
+            elif response.info().get("Content-Encoding"):
+                logging.error("Encoding type unknown")
+            else:
+                result = response.read()
+
             with open(service + "-pricing_" + region + ".json", "wb") as writer:
                 writer.write(result)
 
@@ -36,3 +45,4 @@ if __name__ == "__main__":
     download_json(regions, services)
     ecs.generate_csv(regions)
     evs.generate_csv(regions)
+    eip.generate_csv(regions)
